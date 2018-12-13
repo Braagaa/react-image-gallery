@@ -1,0 +1,138 @@
+/* WRAPPERS */
+.main__wrapper {
+    padding: 0 10px;
+}
+
+/* STUFF */
+.title {
+    color: #438bbd;
+    font-size: 33px;
+    font-family: 'Signika', sans-serif;
+    padding-bottom: 10px;
+}
+
+.search-form {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+.main-nav {
+    display: none;
+}
+
+/** FEATURE-LIST **/
+
+.feature-list {
+    max-width: 1300px;
+    margin: 30px auto;
+    display: flex;
+    flex-flow: row wrap;
+    flex-direction: column;
+}
+
+.feature-list__title {
+    font-size: 1.5em;
+    margin: 40px 0;
+}
+
+.feature-list__item {
+    height: 210px;
+    text-align: center;
+    border: 1px solid #ccc;
+    transition: all .25s ease;
+    padding: 5px;
+    margin: 5px;
+}
+
+.feature-list__item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 15px 0 rgba(0,0,0, 0.15);
+}
+
+.feature-list__item__img {
+    display: block;
+    width: 100%;
+    height: calc(100% - 45px);
+    background: url('/img/nature_sunflower.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.feature-list__item__title {
+    line-height: 1;
+}
+
+input, .search-button {
+    height: 44px;
+}
+
+@media only screen and (min-width: 420px) {
+    .title {
+        font-size: 44px;
+    }
+}
+
+@media only screen and (min-width: 640px) {
+    .title {
+        font-size: 52px;
+    }
+
+    .feature-list {
+        flex-direction: row;
+    }
+
+    .feature-list__item {
+        flex: 1 0 45%;
+    }
+}
+
+@media only screen and (min-width: 768px)  {
+  body {
+    /*padding-top: 4em;*/
+  }
+
+  .container {
+    max-width: 960px;
+    margin: auto;
+  }
+
+  .main-nav {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+  }
+  
+  .main-nav li {
+    margin: 10px;
+    width: 100px;
+  }
+
+  input {
+      max-width: 640px;
+  }
+
+  .search-form {
+      height: 155px;
+      background: url(/img/nature_sunflower.jpg);
+      background-position: center;
+      background-repeat: no-repeat;
+  }
+
+    .feature-list__item {
+        flex: 1 0 28%;
+    }
+}
+
+@media only screen and (min-width: 1024px)  {
+    .feature-list__item {
+        height: 255px;
+        padding: 10px;
+        margin: 0 10px;
+    }
+
+    .search-form {
+        height: 250px;
+    }
+}

@@ -14,7 +14,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "vim": "vim src/*.js src/**/*.js src/**/**/*.js"
+    "vim": "vim src/*.js src/**/*.js src/**/**/*.js src/css/*.css"
   },
   "eslintConfig": {
     "extends": "react-app"
