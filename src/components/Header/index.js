@@ -6,7 +6,7 @@ const Header = props => (
         <div>
             <h1 className="title">React Image Gallery</h1>
         </div>
-        <SearchBar/>
+        <SearchBar {...props}/>
     </header>
 );
 
