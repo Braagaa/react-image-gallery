@@ -6,7 +6,7 @@ import Feature from '../components/Feature/';
 const Home = props => (
     <div className="main__wrapper">
         <Header/>
-        <Feature/>
+        <Feature {...props}/>
     </div>
 );
 

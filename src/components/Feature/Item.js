@@ -1,9 +1,12 @@
 import React from 'react';
 
-const FeatureItem = props => (
-    <li className="feature-list__item">
-        <a className="feature-list__item__img"></a>
-        <h3 className="feature-list__item__title">Example</h3>
+const FeatureItem = ({title, URL, key}) => (
+    <li key={key} className="feature-list__item">
+        <a className="feature-list__item__img" 
+            style={{background: `url(${URL})`}}>
+            {' '}
+        </a>
+        <h3 className="feature-list__item__title">{title}</h3>
     </li>
 );
 
