@@ -6,6 +6,7 @@ import * as R from 'ramda';
 import {getFlickrPhotos, cleanFlickrData} from './modules/flickr';
 import Header from './components/Header/';
 import Home from './pages/Home';
+import GalleryPage from './pages/GalleryPage';
 
 class App extends Component {
     state = {
@@ -45,7 +46,11 @@ class App extends Component {
                     setSearchText={this.setSearchTextHandle}
                     searchText={this.state.searchText}
                 />
-                <Home featuredGalleries={this.state.featuredGalleries}/>
+                {/*<Home featuredGalleries={this.state.featuredGalleries}/>*/}
+                <GalleryPage 
+                    featuredGalleries={this.state.featuredGalleries}
+                    gallery={this.state.currentGallery}
+                />
             </div>
         );
     }

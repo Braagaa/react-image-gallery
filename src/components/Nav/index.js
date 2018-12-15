@@ -1,11 +1,11 @@
 import React from 'react';
+import * as R from 'ramda';
 
-const Nav = props => (
+import NavItem from './Item';
+
+const Nav = ({galleries}) => (
     <ul className="main-nav">
-        <li><a href="www.gamefaws.com">Cat</a></li>
-        <li><a href="www.gamefaws.com">Exercise</a></li>
-        <li><a href="www.gamefaws.com">Jump</a></li>
-        <li><a href="www.gamefaws.com">Cities</a></li>
+        {R.map(NavItem, galleries)}
     </ul>
 );
 

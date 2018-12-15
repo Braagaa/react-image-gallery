@@ -84,8 +84,12 @@ input {
   transition: transform 1.25s;
 }
 
-.photo-container li:hover img {
-  transform: scale(1.65);
+.photo-container ul li {
+    transition: transform 0.6s;
+    cursor: pointer;
+}
+
+.photo-container li:hover img{
 }
 
 .photo-container .not-found {

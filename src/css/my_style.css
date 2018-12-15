@@ -11,15 +11,15 @@
     padding-bottom: 10px;
 }
 
+.main-nav {
+    margin-top: 2.2em;
+}
+
 .search-form {
     width: 100%;
     align-items: center;
     justify-content: center;
     margin: 0;
-}
-
-.main-nav {
-    display: none;
 }
 
 /** FEATURE-LIST **/
@@ -64,6 +64,17 @@
     line-height: 1;
 }
 
+/** GALLERY **/
+.photo-container {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.gallery__item {
+    border-radius: 8px;
+    border: 2px solid #438bbd;
+}
+
 input, .search-button {
     height: 44px;
 }
@@ -85,6 +96,10 @@ input, .search-button {
 
     .feature-list__item {
         flex: 1 0 45%;
+    }
+
+    .gallery__item {
+        border-width: 2px;
     }
 }
 
