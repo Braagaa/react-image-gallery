@@ -4,6 +4,8 @@ const R = require('ramda');
 
 const flickrURL = 'https://api.flickr.com/services/rest/';
 
+const get = R.invoker(2, 'get')(flickrURL, R.__, axios);
+
 const flickrParams = {
     method: 'flickr.photos.search',
     api_key: key,
@@ -28,16 +30,21 @@ const getPhotoProps = R.pipe(
     R.path(['data', 'photos']), 
     R.omit(['perpage'])
 );
+const addExtraPhotoProps = R.applySpec({pendingPage: R.prop('page')});
+
+
 const setURLProp = R.converge(R.mergeRight, [R.identity, toPhotoURLObj]);
 
 const capitalize = R.pipe(R.adjust(0, R.toUpper), R.join(''));
 
 const getFlickrPhotos = text => axios.get(flickrURL, toTagsParam(text));
 
-
 const cleanFlickrData = R.pipe(
     R.converge(R.mergeRight, [getDataTag, getPhotoProps]),
+    R.converge(R.mergeRight, [R.identity, addExtraPhotoProps]),
     R.evolve({tags: capitalize, photo: R.map(setURLProp)})
 );
 
-module.exports = {getFlickrPhotos, cleanFlickrData, toPhotoURL};
+const nextPage = R.pipe(R.mergeRight(flickrParams), R.objOf('params'), get);
+
+module.exports = {getFlickrPhotos, cleanFlickrData, toPhotoURL, nextPage};

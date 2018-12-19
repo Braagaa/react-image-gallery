@@ -2,11 +2,16 @@ import React from 'react';
 
 import Nav from '../components/Nav';
 import Gallery from '../components/Gallery';
+import Pagination from '../components/Pagination';
 
-const GalleryPage = ({featuredGalleries, gallery}) => (
+const GalleryPage = props => (
     <div>
-        <Nav galleries={featuredGalleries}/>
-        <Gallery gallery={gallery}/>
+        <Nav galleries={props.featuredGalleries}/>
+        <Gallery 
+            gallery={props.gallery} 
+            setPage={props.setPage} 
+            setNextPage={props.setNextPage}
+        />
     </div>
 );
 

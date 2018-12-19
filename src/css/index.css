@@ -33,7 +33,7 @@ a {
   cursor: pointer;
 }
 
-input {
+.search-form input {
   font-size: 1em;
   width: 100%;
   background-color: #edeff0;
@@ -63,7 +63,7 @@ input {
   background-color: #275270;
 }
 
-.photo-container ul {
+.photo-container .photo-list {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
@@ -71,20 +71,20 @@ input {
   align-items: flex-start;
 }
 
-.photo-container ul li {
+.photo-container .photo-list li {
   width: 220px;
   height: 165px;
   overflow: hidden;
   margin-bottom: 15px;
 }
 
-.photo-container ul img {
+.photo-container .photo-list img {
   width: 100%;
   transform: scale(1.25);
   transition: transform 1.25s;
 }
 
-.photo-container ul li {
+.photo-container .photo-list li {
     transition: transform 0.6s;
     cursor: pointer;
 }

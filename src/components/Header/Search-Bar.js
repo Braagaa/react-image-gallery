@@ -7,7 +7,9 @@ class SearchBar extends Component {
 
     submitHandle = e => {
         e.preventDefault();
-        this.props.setPhotos(this.props.searchText);
+
+        this.props.setPhotos(this.props.searchText)
+            .then(() => this.props.history.push('/gallery'));
     }
 
     render() {

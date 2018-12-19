@@ -79,6 +79,42 @@ input, .search-button {
     height: 44px;
 }
 
+/** Pagination **/
+.pagination {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.pagination__input span form {
+    display: inline-block;
+}
+
+.pagination__page,
+.pagination__back {
+    padding: 0 5px;
+}
+
+.pagination__input input {
+    width: 80px;
+    height: 21px;
+    text-align: center;
+    padding: 5px;
+}
+
+.pagination__input span span {
+    margin: 0 5px;
+}
+
+.pagination__back img,
+.pagination__forward img {
+    cursor: pointer;
+}
+
+.pagination__forward img {
+    transform: rotate(180deg);
+}
+
 @media only screen and (min-width: 420px) {
     .title {
         font-size: 44px;
