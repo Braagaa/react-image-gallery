@@ -12,6 +12,7 @@ import GalleryPage from './pages/GalleryPage';
 
 class App extends Component {
     state = {
+        isLoading: false,
         searchText: '',
         featuredGalleries: [],
         currentGallery: {}
@@ -20,21 +21,26 @@ class App extends Component {
     changeState = prop => value =>
         this.setState(state => ({...this.state, [prop]: value}));
 
-    setPhotosHandle = text => {
-        return getFlickrPhotos(text)
+    setPhotos = text => {
+        return Promise.resolve(text)
+            .then(R.tap(R.partial(this.changeState('isLoading'), [false]))) //This will rend a loading component
+            .then(getFlickrPhotos)
             .then(cleanFlickrData)
             .then(this.changeState('currentGallery'))
             .then(R.partial(this.changeState('searchText'), ['']))
+            .then(R.partial(this.changeState('isLoading'), [true]))
             .catch(console.error);
     };
 
     setNextPage = num => {
-        return nextPage({
-            tags: this.state.currentGallery.tags,
-            page: num
-        })
+        const params = {tags: this.state.currentGallery.tags, page: num}
+
+        return Promise.resolve(params)
+            .then(R.tap(R.partial(this.changeState('isLoading'), [false])))
+            .then(nextPage)
             .then(cleanFlickrData)
             .then(this.setCurrentGallery)
+            .then(R.tap(R.partial(this.changeState('isLoading'), [true])))
             .then(() => console.log(this.state.currentGallery))
             .catch(console.error);
     };
@@ -58,7 +64,7 @@ class App extends Component {
                 <div>
                     <PropsRoute 
                         path="/" 
-                        setPhotos={this.setPhotosHandle} 
+                        setPhotos={this.setPhotos} 
                         setSearchText={this.setSearchTextHandle}
                         searchText={this.state.searchText}
                         component={Header}
@@ -70,9 +76,12 @@ class App extends Component {
                         component={Home}
                     />
                     <PropsRoute 
-                        path="/gallery"
+                        path="/gallery/:gallery"
                         featuredGalleries={this.state.featuredGalleries}
+                        isLoading={this.state.isLoading}
                         gallery={this.state.currentGallery}
+                        setGalleryloaded={this.setGalleryloaded}
+                        setPhotos={this.setPhotos}
                         setPage={this.setCurrentGallery}
                         setNextPage={this.setNextPage}
                         component={GalleryPage}
