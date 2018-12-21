@@ -6,13 +6,14 @@ import Item from './Item';
 
 const photos = R.pipe(R.prop('photo'), R.map(Item));
 
-const Gallery = ({gallery, setPage, setNextPage}) => (
+const Gallery = ({gallery, setPage, setNextPage, history}) => (
     <div className="photo-container">
         <h2>{gallery.tags}</h2>
         <Pagination 
             gallery={gallery} 
             setPage={setPage}
             setNextPage={setNextPage}
+            history={history}
         />
         <ul className="photo-list">
             {photos(gallery)}
@@ -21,6 +22,7 @@ const Gallery = ({gallery, setPage, setNextPage}) => (
             gallery={gallery} 
             setPage={setPage}
             setNextPage={setNextPage}
+            history={history}
         />
     </div>
 );

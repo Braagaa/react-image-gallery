@@ -37,7 +37,8 @@ const setURLProp = R.converge(R.mergeRight, [R.identity, toPhotoURLObj]);
 
 const capitalize = R.pipe(R.adjust(0, R.toUpper), R.join(''));
 
-const getFlickrPhotos = text => axios.get(flickrURL, toTagsParam(text));
+//const getFlickrPhotos = params => axios.get(flickrURL, toTagsParam(text));
+const getFlickrPhotos = R.pipe(R.mergeRight(flickrParams), R.objOf('params'), get);
 
 const cleanFlickrData = R.pipe(
     R.converge(R.mergeRight, [getDataTag, getPhotoProps]),

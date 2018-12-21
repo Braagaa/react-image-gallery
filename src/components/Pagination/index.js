@@ -11,9 +11,12 @@ class Pagination extends Component {
     )(e);
 
     submitHandle = e => {
-        const value = this.props.gallery.pendingPage;
-        const maxPage = this.props.gallery.pages;
+        const {
+            pendingPage: value, pages: maxPage, tags
+        } = this.props.gallery;
         const setNextPage = this.props.setNextPage;
+        const history = this.props.history;
+       
         e.preventDefault();
 
         if (isNotNumber(value)) {
@@ -21,18 +24,18 @@ class Pagination extends Component {
         }
 
         if (isLessThan0(value)) {
-            return setNextPage(1);
+            return history.push(`/gallery/${tags}/1`);
         }
 
         if (isGreatherThenMax(value, maxPage)) {
-            return setNextPage(maxPage);
+            return history.push(`/gallery/${tags}/${maxPage}`);
         }
 
-        setNextPage(value);
+        history.push(`/gallery/${tags}/${value}`);
     };
 
     page = (pred, incOrDec) => e => {
-        const page = this.props.gallery.page;
+        const {tags, page} = this.props.gallery;
 
         if (pred(page)) {
             this.props.setNextPage(incOrDec(page));

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter, Route, Redirect, Switch} from 'react-router-dom';
 import {PropsRoute} from 'react-router-with-props';
 import axios from 'axios';
 import randomWords from 'random-words';
@@ -9,6 +9,7 @@ import {getFlickrPhotos, cleanFlickrData, nextPage} from './modules/flickr';
 import Header from './components/Header/';
 import Home from './pages/Home';
 import GalleryPage from './pages/GalleryPage';
+import RedirectGallery from './components/RedirectGallery/';
 
 class App extends Component {
     state = {
@@ -21,8 +22,8 @@ class App extends Component {
     changeState = prop => value =>
         this.setState(state => ({...this.state, [prop]: value}));
 
-    setPhotos = text => {
-        return Promise.resolve(text)
+    setPhotos = params => {
+        return Promise.resolve(params)
             .then(R.tap(R.partial(this.changeState('isLoading'), [false]))) //This will rend a loading component
             .then(getFlickrPhotos)
             .then(cleanFlickrData)
@@ -36,11 +37,11 @@ class App extends Component {
         const params = {tags: this.state.currentGallery.tags, page: num}
 
         return Promise.resolve(params)
-            .then(R.tap(R.partial(this.changeState('isLoading'), [false])))
+        //.then(R.tap(R.partial(this.changeState('isLoading'), [false])))
             .then(nextPage)
             .then(cleanFlickrData)
             .then(this.setCurrentGallery)
-            .then(R.tap(R.partial(this.changeState('isLoading'), [true])))
+        //.then(R.tap(R.partial(this.changeState('isLoading'), [true])))
             .then(() => console.log(this.state.currentGallery))
             .catch(console.error);
     };
@@ -50,15 +51,15 @@ class App extends Component {
 
     componentDidMount() {
         return Promise.resolve(randomWords({exactly: 3}))
-            .then(R.map(getFlickrPhotos))
+            .then(R.map(R.pipe(R.objOf('tags'), getFlickrPhotos)))
             .then(axios.all)
+            .then(R.tap(console.log))
             .then(R.map(cleanFlickrData))
             .then(this.changeState('featuredGalleries'))
             .catch(console.error);
     };
 
     render() {
-        console.log(this.state);
         return (
             <BrowserRouter>
                 <div>
@@ -69,23 +70,30 @@ class App extends Component {
                         searchText={this.state.searchText}
                         component={Header}
                     />
-                    <PropsRoute 
-                        exact
-                        path="/"
-                        featuredGalleries={this.state.featuredGalleries}
-                        component={Home}
-                    />
-                    <PropsRoute 
-                        path="/gallery/:gallery"
-                        featuredGalleries={this.state.featuredGalleries}
-                        isLoading={this.state.isLoading}
-                        gallery={this.state.currentGallery}
-                        setGalleryloaded={this.setGalleryloaded}
-                        setPhotos={this.setPhotos}
-                        setPage={this.setCurrentGallery}
-                        setNextPage={this.setNextPage}
-                        component={GalleryPage}
-                    />
+                    <Switch>
+                        <PropsRoute 
+                            exact
+                            path="/"
+                            featuredGalleries={this.state.featuredGalleries}
+                            component={Home}
+                        />
+                        <Redirect exact from="/gallery" to="/"/>
+                        <Route 
+                            exact 
+                            path="/gallery/:gallery" 
+                            component={RedirectGallery}
+                        />
+                        <PropsRoute 
+                            path="/gallery/:gallery/:page"
+                            featuredGalleries={this.state.featuredGalleries}
+                            isLoading={this.state.isLoading}
+                            gallery={this.state.currentGallery}
+                            setCurrentGallery={this.setCurrentGallery}
+                            setPhotos={this.setPhotos}
+                            setNextPage={this.setNextPage}
+                            component={GalleryPage}
+                        />
+                    </Switch>
                 </div>
             </BrowserRouter>
         );
