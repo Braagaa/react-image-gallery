@@ -16,6 +16,7 @@ class App extends Component {
     state = {
         error: false,
         isLoading: false,
+        featuredLoading: false,
         searchText: '',
         featuredGalleries: [],
         currentGallery: {}
@@ -62,9 +63,9 @@ class App extends Component {
     componentDidMount() {
         return Promise.resolve(randomWords({exactly: 3}))
             .then(R.map(R.pipe(R.objOf('tags'), getFlickrPhotos)))
-            .then(R.tap(R.partial(this.changeState('isLoading'), [true])))
+            .then(R.tap(R.partial(this.changeState('featuredLoading'), [true])))
             .then(axios.all)
-            .then(R.tap(R.partial(this.changeState('isLoading'), [false])))
+            .then(R.tap(R.partial(this.changeState('featuredLoading'), [false])))
             .then(R.map(cleanFlickrData))
             .then(this.changeState('featuredGalleries'))
             .catch(this.errorState);
@@ -87,7 +88,7 @@ class App extends Component {
                             path="/"
                             featuredGalleries={this.state.featuredGalleries}
                             isError={this.state.error}
-                            isLoading={this.state.isLoading}
+                            isLoading={this.state.featuredLoading}
                             component={Home}
                         />
                         <Redirect exact from="/gallery" to="/"/>
