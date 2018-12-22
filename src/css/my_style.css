@@ -115,6 +115,34 @@ input, .search-button {
     transform: rotate(180deg);
 }
 
+/** ERROR **/
+.error__icon {
+    font-size: 100px;
+    color: #438bbd;
+    margin-top: 15px;
+}
+
+.error__title {
+    text-decoration: underline;
+    font-size: 1.7em;
+}
+
+/** COG LOADING **/
+.cog {
+    margin: 40px;
+}
+
+.cog__outer {
+    transform-origin: center;
+    animation: spin 1s cubic-bezier(.03,1,.77,1) infinite;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(45deg);
+    }
+}
+
 @media only screen and (min-width: 420px) {
     .title {
         font-size: 44px;

@@ -7,12 +7,14 @@ import * as R from 'ramda';
 
 import {getFlickrPhotos, cleanFlickrData, nextPage} from './modules/flickr';
 import Header from './components/Header/';
+import RedirectGallery from './components/RedirectGallery/';
 import Home from './pages/Home';
 import GalleryPage from './pages/GalleryPage';
-import RedirectGallery from './components/RedirectGallery/';
+import ErrorPage from './pages/ErrorPage';
 
 class App extends Component {
     state = {
+        error: false,
         isLoading: false,
         searchText: '',
         featuredGalleries: [],
@@ -26,37 +28,46 @@ class App extends Component {
         return Promise.resolve(params)
             .then(R.tap(R.partial(this.changeState('isLoading'), [false]))) //This will rend a loading component
             .then(getFlickrPhotos)
+            .then(R.tap(R.partial(this.changeState('error'), [false])))
+            .then(R.tap(console.log))
             .then(cleanFlickrData)
             .then(this.changeState('currentGallery'))
             .then(R.partial(this.changeState('searchText'), ['']))
             .then(R.partial(this.changeState('isLoading'), [true]))
-            .catch(console.error);
+            .catch(this.errorState);
     };
 
     setNextPage = num => {
         const params = {tags: this.state.currentGallery.tags, page: num}
 
         return Promise.resolve(params)
-        //.then(R.tap(R.partial(this.changeState('isLoading'), [false])))
+            //.then(R.tap(R.partial(this.changeState('isLoading'), [false])))
             .then(nextPage)
+            .then(R.tap(R.partial(this.changeState('error'), [false])))
             .then(cleanFlickrData)
             .then(this.setCurrentGallery)
-        //.then(R.tap(R.partial(this.changeState('isLoading'), [true])))
+            //.then(R.tap(R.partial(this.changeState('isLoading'), [true])))
             .then(() => console.log(this.state.currentGallery))
-            .catch(console.error);
+            .catch(this.errorState);
     };
 
     setSearchTextHandle = this.changeState('searchText');
     setCurrentGallery = this.changeState('currentGallery');
 
+    errorState = R.pipe(
+        R.tap(console.error),
+        R.partial(this.changeState('error'), [true]),
+    );
+
     componentDidMount() {
         return Promise.resolve(randomWords({exactly: 3}))
             .then(R.map(R.pipe(R.objOf('tags'), getFlickrPhotos)))
+            .then(R.tap(R.partial(this.changeState('isLoading'), [true])))
             .then(axios.all)
-            .then(R.tap(console.log))
+            .then(R.tap(R.partial(this.changeState('isLoading'), [false])))
             .then(R.map(cleanFlickrData))
             .then(this.changeState('featuredGalleries'))
-            .catch(console.error);
+            .catch(this.errorState);
     };
 
     render() {
@@ -75,6 +86,8 @@ class App extends Component {
                             exact
                             path="/"
                             featuredGalleries={this.state.featuredGalleries}
+                            isError={this.state.error}
+                            isLoading={this.state.isLoading}
                             component={Home}
                         />
                         <Redirect exact from="/gallery" to="/"/>
@@ -84,14 +97,22 @@ class App extends Component {
                             component={RedirectGallery}
                         />
                         <PropsRoute 
+                            exact
                             path="/gallery/:gallery/:page"
                             featuredGalleries={this.state.featuredGalleries}
                             isLoading={this.state.isLoading}
                             gallery={this.state.currentGallery}
+                            isError={this.state.error}
                             setCurrentGallery={this.setCurrentGallery}
                             setPhotos={this.setPhotos}
                             setNextPage={this.setNextPage}
                             component={GalleryPage}
+                        />
+                        <PropsRoute
+                            component={ErrorPage}
+                            galleries={this.state.featuredGalleries}
+                            header="404 Error"
+                            message={"Page Not Found"}
                         />
                     </Switch>
                 </div>
