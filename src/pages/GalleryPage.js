@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import * as R from 'ramda';
 
 import Nav from '../components/Nav';
@@ -61,5 +62,15 @@ class GalleryPage extends Component {
         ) : <Loading/>;
     };
 }
+
+GalleryPage.propTypes = {
+    featuredGalleries: PropTypes.array,
+    isLoading: PropTypes.bool,
+    isError: PropTypes.bool,
+    gallery: PropTypes.object,
+    setCurrentGallery: PropTypes.func,
+    setPhotos: PropTypes.func,
+    setNextPage: PropTypes.func
+};
 
 export default GalleryPage;

@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import SearchBar from './Search-Bar';
 
 const Header = props => (
@@ -9,5 +11,11 @@ const Header = props => (
         <SearchBar {...props}/>
     </header>
 );
+
+Header.propTypes = {
+    setPhotos: PropTypes.func,
+    setSearchText: PropTypes.func,
+    searchText: PropTypes.string
+};
 
 export default Header;

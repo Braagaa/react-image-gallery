@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as R from 'ramda';
 
 import FeatureItem from './Item';
@@ -23,5 +24,9 @@ const Feature = ({featuredGalleries}) => (
         </ul>
     </div>
 );
+
+Feature.propTypes = {
+    featuredGalleries: PropTypes.array
+};
 
 export default Feature;

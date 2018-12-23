@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 import MagnifySVG from './MagnifySVG';
 
@@ -29,5 +30,11 @@ class SearchBar extends Component {
         );
     }
 }
+
+SearchBar.propTypes = {
+    setPhotos: PropTypes.func,
+    setSearchText: PropTypes.func,
+    searchText: PropTypes.string
+};
 
 export default SearchBar;

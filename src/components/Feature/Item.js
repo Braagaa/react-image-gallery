@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
 const FeatureItem = ({title, URL, key}) => (
@@ -10,5 +11,11 @@ const FeatureItem = ({title, URL, key}) => (
         <h3 className="feature-list__item__title">{title}</h3>
     </li>
 );
+
+FeatureItem.propTypes = {
+    key: PropTypes.string,
+    title: PropTypes.string,
+    URL: PropTypes.string
+};
 
 export default FeatureItem;

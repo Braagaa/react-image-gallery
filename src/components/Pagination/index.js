@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import * as R from 'ramda';
 
 import {isNotNumber, isLessThan0, isGreatherThenMax} from '../../modules/validation';
@@ -83,5 +84,12 @@ class Pagination extends Component {
         );
     }
 }
+
+Pagination.propTypes = {
+    gallery: PropTypes.object,
+    history: PropTypes.object,
+    setPage: PropTypes.func,
+    setNextPage: PropTypes.func
+};
 
 export default Pagination;

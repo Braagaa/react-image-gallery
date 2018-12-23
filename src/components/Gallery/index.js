@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as R from 'ramda';
 
 import Pagination from '../../components/Pagination/';
@@ -32,6 +33,13 @@ const Gallery = ({gallery, setPage, setNextPage, history}) => {
             <NoResults/>
         </div>
     );
+};
+
+Gallery.propTypes = {
+    gallery: PropTypes.object,
+    history: PropTypes.object,
+    setPage: PropTypes.func,
+    setNextPage: PropTypes.func
 };
 
 export default Gallery;
