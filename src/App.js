@@ -30,7 +30,6 @@ class App extends Component {
             .then(R.tap(R.partial(this.changeState('isLoading'), [false]))) //This will rend a loading component
             .then(getFlickrPhotos)
             .then(R.tap(R.partial(this.changeState('error'), [false])))
-            .then(R.tap(console.log))
             .then(cleanFlickrData)
             .then(this.changeState('currentGallery'))
             .then(R.partial(this.changeState('searchText'), ['']))
@@ -48,7 +47,6 @@ class App extends Component {
             .then(cleanFlickrData)
             .then(this.setCurrentGallery)
             //.then(R.tap(R.partial(this.changeState('isLoading'), [true])))
-            .then(() => console.log(this.state.currentGallery))
             .catch(this.errorState);
     };
 

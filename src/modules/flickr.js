@@ -18,11 +18,6 @@ const flickrParams = {
 const toPhotoURL = ({farm, server, id, secret}) => 
     `https://farm${farm}.staticflickr.com/${server}/${id}_${secret}.jpg`;
 
-const toTagsParam = R.pipe(
-    R.assoc('tags', R.__, flickrParams),
-    R.objOf('params')
-);
-
 const toPhotoURLObj = R.pipe(toPhotoURL, R.objOf('URL'));
 
 const getDataTag = R.pipe(R.path(['config', 'params']), R.pick(['tags']));
@@ -37,7 +32,6 @@ const setURLProp = R.converge(R.mergeRight, [R.identity, toPhotoURLObj]);
 
 const capitalize = R.pipe(R.adjust(0, R.toUpper), R.join(''));
 
-//const getFlickrPhotos = params => axios.get(flickrURL, toTagsParam(text));
 const getFlickrPhotos = R.pipe(R.mergeRight(flickrParams), R.objOf('params'), get);
 
 const cleanFlickrData = R.pipe(

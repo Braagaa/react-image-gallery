@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Redirect} from 'react-router-dom';
 import * as R from 'ramda';
 
 import Nav from '../components/Nav';
@@ -17,7 +16,7 @@ const changeProps = R.applySpec({
 class GalleryPage extends Component {
     componentDidUpdate(prevProps) {
         const {gallery, page} = this.props.match.params;
-        const {pages: maxPage, photo} = this.props.gallery;
+        const {pages: maxPage} = this.props.gallery;
 
         if (this.props.match.url !== prevProps.match.url) {
             return this.props.setPhotos(changeProps(this.props.match.params));

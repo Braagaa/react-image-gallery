@@ -14,7 +14,6 @@ class Pagination extends Component {
         const {
             pendingPage: value, pages: maxPage, tags
         } = this.props.gallery;
-        const setNextPage = this.props.setNextPage;
         const history = this.props.history;
        
         e.preventDefault();
@@ -35,7 +34,7 @@ class Pagination extends Component {
     };
 
     page = (pred, incOrDec) => e => {
-        const {tags, page} = this.props.gallery;
+        const {page} = this.props.gallery;
 
         if (pred(page)) {
             this.props.setNextPage(incOrDec(page));
