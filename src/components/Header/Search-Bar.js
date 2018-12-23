@@ -8,7 +8,9 @@ class SearchBar extends Component {
 
     submitHandle = e => {
         e.preventDefault();
-
+        
+        //redirect to gallery/:gallery/:page
+        //default page 1
         this.props.history.push(`/gallery/${this.props.searchText}/1`);
     }
 

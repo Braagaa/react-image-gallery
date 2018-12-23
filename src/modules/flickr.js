@@ -21,25 +21,53 @@ const toPhotoURL = ({farm, server, id, secret}) =>
 const toPhotoURLObj = R.pipe(toPhotoURL, R.objOf('URL'));
 
 const getDataTag = R.pipe(R.path(['config', 'params']), R.pick(['tags']));
+
 const getPhotoProps = R.pipe(
     R.path(['data', 'photos']), 
     R.omit(['perpage'])
 );
-const addExtraPhotoProps = R.applySpec({pendingPage: R.prop('page')});
 
+const addExtraPhotoProps = R.applySpec({pendingPage: R.prop('page')});
 
 const setURLProp = R.converge(R.mergeRight, [R.identity, toPhotoURLObj]);
 
 const capitalize = R.pipe(R.adjust(0, R.toUpper), R.join(''));
 
-const getFlickrPhotos = R.pipe(R.mergeRight(flickrParams), R.objOf('params'), get);
+/**
+ * Takes and object and merges it with the default flickrParams object.
+ * Takes the merged object and uses it as a value for the key param in 
+ * another object. The object is then sent as parameters with axios and
+ * data is fetched.
+ */
+const getFlickrPhotos = R.pipe(
+    R.mergeRight(flickrParams), 
+    R.objOf('params'), 
+    get
+);
 
+/**
+ * Takes the raw data retrieved from Flickr api and abstracts and cleans
+ * the data by adding, ommiting, or editing properties that will be better
+ * suited for this program.
+ */
 const cleanFlickrData = R.pipe(
+    /**
+     * Gets the tags prop as an object.
+     * Gets the photo prop as an object.
+     * Merges both objects as one.
+     */
     R.converge(R.mergeRight, [getDataTag, getPhotoProps]),
+    //adds extra properties needed to the merged object
     R.converge(R.mergeRight, [R.identity, addExtraPhotoProps]),
+    /*
+     * Edits properites from the object. Capitalizes the tags properties.
+     * Gives each object in the photo prop a URL property that has a 
+     * working URL to obtain a picture from Flickr.
+     */
     R.evolve({tags: capitalize, photo: R.map(setURLProp)})
 );
 
-const nextPage = R.pipe(R.mergeRight(flickrParams), R.objOf('params'), get);
+//getFlickrPhotos alias
+const nextPage = getFlickrPhotos;
 
 module.exports = {getFlickrPhotos, cleanFlickrData, toPhotoURL, nextPage};

@@ -11,7 +11,8 @@ import {isLessThan1, isGreatherThenMax, isNotNumber} from '../modules/validation
 
 const changeProps = R.applySpec({
     tags: R.prop('gallery'), 
-    page: R.propOr('1', 'page') //This will default to page 1 if no page# is given
+    //This will default to page 1 if no page# is given
+    page: R.propOr('1', 'page') 
 });
 
 class GalleryPage extends Component {
@@ -19,14 +20,26 @@ class GalleryPage extends Component {
         const {gallery, page} = this.props.match.params;
         const {pages: maxPage} = this.props.gallery;
 
+        //current url does not match previous url, fetch new gallery with
+        //desired page number
         if (this.props.match.url !== prevProps.match.url) {
             return this.props.setPhotos(changeProps(this.props.match.params));
         }
 
+        //if page is not a number, redirect the gallery to default page 1
         if (isNotNumber(page)) {
             return this.props.history.replace(`/gallery/${gallery}/1`);
         }
 
+        /**
+         * If page is greater than the max page of the gallery available,
+         * redirect the gallery to the last available page.
+         *
+         * NOTE: maxPage !== 0 is needed beause if a gallery consists of 
+         * no results then the page displayed on URL would be 0. This would
+         * persist on the new successful search with results. This was not
+         * wanted.
+         */
         if (isGreatherThenMax(page, maxPage) && maxPage !== 0) {
             return this.props.history.replace(`/gallery/${gallery}/${maxPage}`);
         }
@@ -34,7 +47,14 @@ class GalleryPage extends Component {
 
     componentDidMount() {
         const {gallery, page} = this.props.match.params;
-        
+
+        /**
+         * If page is less than 1, redirect gallery to default page 1.
+         *
+         * NOTE: This is needed here and not in componentDidUpdate because
+         *       there would be a recursive overflow calls when a gallery
+         *       consists of no results. This would break the program.
+         */
         if (isLessThan1(page)) {
             return this.props.history.replace(`/gallery/${gallery}/1`);
         }

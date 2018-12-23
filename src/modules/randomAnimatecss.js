@@ -15,6 +15,8 @@ const animations = [
 
 const animationString = '0.5s ease-in ';
 
+//randomly selects a value from animations and concatinates it to 
+//animationString
 const randomAnimation = R.pipe(
     R.length,
     R.dec,
@@ -23,6 +25,11 @@ const randomAnimation = R.pipe(
     R.concat(animationString)
 );
 
+/**
+ * Takes an event object, get the currentTarget element's animation style
+ * prop and randomly assigns it a random animation name provided by 
+ * Animate.css.
+ */
 const applyRandomAnimation = e => 
     e.currentTarget.style.animation = randomAnimation(animations);
 
