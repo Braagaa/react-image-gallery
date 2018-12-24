@@ -1,3 +1,29 @@
+# React Image Gallery
+
+A simple image gallery made with React and create-react-app. It uses [Flickr's](https://www.flickr.com/services/api/) API to fetch data to display images.
+
+Just enter a topic that you want to see and results will be displayed. You can also traverse between pages of a topic if many results are returned back.
+
+### Necessary Files
+
+A working Flickr api key is needed to run this app. You can get a non-commercial version [here](https://www.flickr.com/services/apps/create/apply/).
+
+A __config.js__ is needed that exports an object with _key_ as a property for your api key as a value.
+
+__NOTE:__ The __config.js__ must be placed at __src/data/__
+
+Example of __config.js__:
+
+```js
+module.exports = {
+    key: 'YOUR API KEY HERE'
+};
+
+//at src/data/config.js
+```
+
+# create-react-app stuff
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
