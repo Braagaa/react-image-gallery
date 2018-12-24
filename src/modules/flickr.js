@@ -45,12 +45,32 @@ const getFlickrPhotos = R.pipe(
     get
 );
 
+const throwFecthError = R.pipe(
+    R.prop('data'),
+    R.evolve({code: code => `Error Code ${code}:`}),
+    R.props(['code', 'message']),
+    R.join(' '),
+    err => {
+        err.name = 'Flickr Error';
+        throw err;
+    }
+);
+
 /**
  * Takes the raw data retrieved from Flickr api and abstracts and cleans
  * the data by adding, ommiting, or editing properties that will be better
  * suited for this program.
  */
 const cleanFlickrData = R.pipe(
+    /**
+     * If data.stat does not equal 'ok', then create a custome Flickr Error
+     * object and throw it. This should be caught at a Promise.catch and be
+     * delt with there.
+     */
+    R.when(
+        R.pathSatisfies(R.complement(R.equals('ok')), ['data','stat']),
+        throwFecthError
+    ),
     /**
      * Gets the tags prop as an object.
      * Gets the photo prop as an object.
